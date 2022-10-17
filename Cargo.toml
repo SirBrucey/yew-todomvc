@@ -8,5 +8,6 @@ edition = "2021"
 [dependencies]
 serde = { version = "1.0.48", features = ["derive"] }
 wasm-logger = "0.2.0"
+web-sys = { version = "0.3.60", features = ["HtmlInputElement"] }
 yew = "0.19.3"
 yewdux = "0.8.2"
