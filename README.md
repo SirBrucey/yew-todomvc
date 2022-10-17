@@ -1,5 +1,5 @@
-# tailwindcss-yew-template
-Simple layout for using Tailwindcss with Yew.
+# TodoMVC (Yew)
+TodoMVC implementaion written in yew using tailwind css.
 
 ## Installation
 Install tailwindcss and relevant tools. Make sure **node** and **rust** is installed on your system!
