@@ -9,10 +9,16 @@ use state::{Entity, State};
 #[function_component(App)]
 fn app() -> Html {
     html! {
-        <div>
-            <h1>{ "TodoMVC - Yew" }</h1>
-            <AddEntry />
-            <ListEntities />
+        <div class="flex flex-col justify-center bg-slate-700 min-h-screen w-screen">
+            <header class="flex grow-0 justify-center">
+                <h1>{ "TodoMVC - Yew" }</h1>
+            </header>
+            <div class="flex grow-0 justify-center">
+                <AddEntry />
+            </div>
+            <main class="flex flex-col items-center content-start justify-evenly grow">
+                <ListEntities />
+            </main>
         </div>
     }
 }
@@ -114,12 +120,16 @@ fn list_entities() -> Html {
         .collect::<Html>();
 
     html! {
-        <div>
-            <h3>{"Entries"}</h3>
-            <ul>
-                { entries }
-            </ul>
-        </div>
+        <>
+            <div class="flex grow-0">
+                <h3>{"Entries"}</h3>
+            </div>
+            <div class="flex grow">
+                <ul>
+                    { entries }
+                </ul>
+            </div>
+        </>
     }
 }
 
