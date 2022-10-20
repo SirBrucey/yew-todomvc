@@ -40,10 +40,70 @@ fn add_entry() -> Html {
 
 #[function_component(ListEntities)]
 fn list_entities() -> Html {
+    let focus_ref = use_node_ref();
     let (state, dispatch) = use_store::<State>();
 
     let view_entry = |(index, entity): (usize, &Entity)| {
-        html! {<li>{ &entity.description }</li>}
+        let view = {
+            let ondblclick = dispatch.reduce_mut_callback(move |s| {
+                s.edited_value = s.entities[index].description.clone();
+                s.toggle_edit(index);
+            });
+
+            html! {
+                <label { ondblclick }>{ &entity.description }</label>
+            }
+        };
+
+        let edit_field = {
+            let edit = move |input: HtmlInputElement, state: &mut State| {
+                let value = input.value();
+                input.set_value("");
+
+                state.update_description(index, value);
+                state.edited_value = "".to_string();
+            };
+
+            let onkeypress = dispatch.reduce_mut_callback_with(move |s, e: KeyboardEvent| {
+                if e.key() == "Enter" {
+                    edit(e.target_unchecked_into(), s);
+                }
+            });
+
+            let onblur = dispatch.reduce_mut_callback_with(move |s, e: FocusEvent| {
+                edit(e.target_unchecked_into(), s);
+            });
+
+            let onmouseover = {
+                let focus_ref = focus_ref.clone();
+                Callback::from(move |_| {
+                    if let Some(input) = focus_ref.cast::<HtmlInputElement>() {
+                        input.focus().unwrap();
+                    }
+                })
+            };
+
+            if entity.editing {
+                html! {
+                    <input
+                        type="text"
+                        ref={ focus_ref.clone() }
+                        value={ state.edited_value.clone() }
+                        { onkeypress }
+                        { onmouseover }
+                        { onblur }
+                    />
+                }
+            } else {
+                view
+            }
+        };
+
+        html! {
+            <li>
+                { edit_field }
+            </li>
+        }
     };
 
     let entries = state
