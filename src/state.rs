@@ -16,6 +16,21 @@ pub struct Entity {
 }
 
 impl State {
+    pub fn add(&mut self, value: String) {
+        if !value.is_empty() {
+            if !self
+                .entities
+                .iter()
+                .any(|entity| entity.description == value)
+            {
+                self.entities.push(Entity {
+                    description: value,
+                    ..Default::default()
+                })
+            }
+        }
+    }
+
     pub fn toggle_edit(&mut self, index: usize) {
         let entity = self.get_mut_entity(index);
         entity.editing = !entity.editing;

@@ -30,12 +30,7 @@ fn add_entry() -> Html {
             let input: HtmlInputElement = e.target_unchecked_into();
             let value = input.value();
             input.set_value("");
-            if !value.is_empty() {
-                s.entities.push(Entity {
-                    description: value.trim().to_string(),
-                    ..Default::default()
-                })
-            }
+            s.add(value);
         }
     });
 
